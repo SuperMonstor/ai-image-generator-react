@@ -1,6 +1,7 @@
-# AI Image Generator 
+# AI Image Generator
 
-## Dependencies 
+## Dependencies
+
 ```
-    npm i express cors dotenv openai fs multer 
+    npm i express cors dotenv openai fs multer nodemon
 ```
