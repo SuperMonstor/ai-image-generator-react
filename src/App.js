@@ -2,8 +2,13 @@ import "./index.css";
 import { useState } from "react";
 
 function App() {
+
+  // State Management
 	const [images, setImages] = useState(null);
 	const [value, setValue] = useState(null);
+	const [error, setError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
 	const surpriseOptions = [
 		"A cat running down a neon street in a city in the rain, cyberpunk themed",
 		"A girl citting over the edge of a city skyline smoking a cigarette. Sillouhette.",
@@ -11,6 +16,11 @@ function App() {
 	];
 
 	const getImages = async () => {
+		setImages(null);
+		if (value === null) {
+			setError("No search term");
+			return;
+		}
 		try {
 			const options = {
 				method: "POST",
@@ -40,6 +50,26 @@ function App() {
 		setValue(randomValue);
 	};
 
+  const uploadImage = async (e) => {
+    console.log(e.target.files[0]);
+
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    setSelectedImage(e.target.files[0]);
+    try {
+      const options = {
+        method: "POST",
+        body: formData,
+      }
+      const response = await fetch('http://localhost:8000/upload', options);
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
 	return (
 		<div className="App">
 			<section className="search-section">
@@ -57,6 +87,15 @@ function App() {
 					/>
 					<button onClick={getImages}>Generate</button>
 				</div>
+				<p className="extra-info">
+					Or,
+					<span>
+						<label htmlFor="files"> upload an image </label>
+						<input id="files" onChange={uploadImage} accept="image/*" type="file" hidden />
+					</span>
+					to edit.
+				</p>
+				{error && <p>{error}</p>}
 			</section>
 			<section className="image-section">
 				{images?.map((image, _index) => (
