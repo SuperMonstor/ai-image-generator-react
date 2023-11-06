@@ -1,13 +1,14 @@
 import "./index.css";
 import { useState } from "react";
+import Modal from "./components/Modal";
 
 function App() {
-
-  // State Management
+	// State Management
 	const [images, setImages] = useState(null);
 	const [value, setValue] = useState(null);
 	const [error, setError] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [modalOpen, setModalOpen] = useState(false);
 
 	const surpriseOptions = [
 		"A cat running down a neon street in a city in the rain, cyberpunk themed",
@@ -50,25 +51,29 @@ function App() {
 		setValue(randomValue);
 	};
 
-  const uploadImage = async (e) => {
-    console.log(e.target.files[0]);
+	const uploadImage = async (e) => {
+		console.log(e.target.files[0]);
 
-    const formData = new FormData();
-    formData.append('file', e.target.files[0]);
-    setSelectedImage(e.target.files[0]);
-    try {
-      const options = {
-        method: "POST",
-        body: formData,
-      }
-      const response = await fetch('http://localhost:8000/upload', options);
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+		const formData = new FormData();
+		formData.append("file", e.target.files[0]);
+		setSelectedImage(e.target.files[0]);
+		setModalOpen(true);
 
+		try {
+			const options = {
+				method: "POST",
+				body: formData,
+			};
+			const response = await fetch(
+				"http://localhost:8000/upload",
+				options
+			);
+			const data = await response.json();
+			console.log(data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	return (
 		<div className="App">
@@ -91,11 +96,26 @@ function App() {
 					Or,
 					<span>
 						<label htmlFor="files"> upload an image </label>
-						<input id="files" onChange={uploadImage} accept="image/*" type="file" hidden />
+						<input
+							id="files"
+							onChange={uploadImage}
+							accept="image/*"
+							type="file"
+							hidden
+						/>
 					</span>
 					to edit.
 				</p>
 				{error && <p>{error}</p>}
+				{modalOpen && (
+					<div className="overlay">
+						<Modal
+							setModalOpen={setModalOpen}
+							setSelectedImage={setSelectedImage}
+							selectedImage={selectedImage}
+						/>
+					</div>
+				)}
 			</section>
 			<section className="image-section">
 				{images?.map((image, _index) => (
