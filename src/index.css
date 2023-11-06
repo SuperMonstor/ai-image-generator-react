@@ -109,6 +109,21 @@ p {
 	z-index: 10;
 }
 
+.modal button {
+	width: 100%;
+	padding: 20px;
+	border: none;
+}
+
+.modal button:active {
+	background-color: #fafafc;
+}
+
+.img-container img {
+	height: 240px;
+	width: 240px;
+}
+
 @media (max-width: 556px) {
 	.image-section img {
 		max-width: 100%;

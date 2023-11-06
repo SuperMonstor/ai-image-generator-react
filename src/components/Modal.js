@@ -11,7 +11,9 @@ const Modal = ({ setModalOpen, setSelectedImage, selectedImage }) => {
 
 	return (
 		<div className="modal">
-			<div onClick={closeModal}>X</div>
+			<div className="close-button" onClick={closeModal}>
+				ⓧ
+			</div>
 			<div className="img-container">
 				{selectedImage && (
 					<img
@@ -20,7 +22,7 @@ const Modal = ({ setModalOpen, setSelectedImage, selectedImage }) => {
 					/>
 				)}
 			</div>
-            <button>Generate</button>
+			<button>Generate</button>
 		</div>
 	);
 };

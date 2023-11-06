@@ -24,7 +24,7 @@ const openai = new OpenAI(process.env.OPENAI_API_KEY);
 const storage = multer.diskStorage({
 	destination: (req, file, callback) => {
 		// where to store on the server
-		callback(null, "public"); // parameters: error, folder name
+		callback(null, "public/images"); // parameters: error, folder name
 	},
 	filename: (req, file, callback) => {
 		console.log("file" + file);
@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
 	},
 });
 
-const upload = multer({storage: storage}).single('file');
+const upload = multer({ storage: storage }).single("file");
 
 // Endpoint for images
 app.post("/images", async (req, res) => {
@@ -50,14 +50,14 @@ app.post("/images", async (req, res) => {
 });
 
 app.post("/upload", (req, res) => {
-    upload(req, res, (err) => {
-        if(err instanceof multer.MulterError) {
-            return res.status(500).json(err);
-        } else if(err) {
-            return res.status(500).json(err);
-        }
-        console.log(req.file);
-    })
+	upload(req, res, (err) => {
+		if (err instanceof multer.MulterError) {
+			return res.status(500).json(err);
+		} else if (err) {
+			return res.status(500).json(err);
+		}
+		console.log(req.file);
+	});
 });
 // Start server and listen for HTTP requests
 app.listen(PORT, () => console.log("Your server is running on PORT " + PORT));
