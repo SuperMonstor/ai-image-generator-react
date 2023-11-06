@@ -109,6 +109,16 @@ p {
 	z-index: 10;
 }
 
+.modal {
+	position: relative;
+	z-index: 100;
+	background-color: #fff;
+	padding: 10px;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
 .modal button {
 	width: 100%;
 	padding: 20px;
@@ -119,9 +129,17 @@ p {
 	background-color: #fafafc;
 }
 
+.modal button:hover {
+	cursor: pointer;
+}
+
 .img-container img {
 	height: 240px;
 	width: 240px;
+}
+
+.close-button:hover {
+	cursor: pointer;
 }
 
 @media (max-width: 556px) {
