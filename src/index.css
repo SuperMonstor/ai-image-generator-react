@@ -134,8 +134,9 @@ p {
 }
 
 .img-container img {
-	height: 240px;
-	width: 240px;
+	height: 256px;
+	width: 256px;
+  overflow: hidden;
 }
 
 .close-button:hover {

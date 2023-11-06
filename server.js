@@ -15,10 +15,10 @@ app.use(express.json());
 require("dotenv").config(); // to manage api keys
 
 // Open AI Package init
-// const configuration = new Configuration({
-// 	apiKey: process.env.OPENAI_API_KEY,
-// });
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
+
+// store filePath
+let filePath;
 
 // For file uploads
 const storage = multer.diskStorage({
@@ -49,6 +49,7 @@ app.post("/images", async (req, res) => {
 	}
 });
 
+// Handle uploading of files
 app.post("/upload", (req, res) => {
 	upload(req, res, (err) => {
 		if (err instanceof multer.MulterError) {
@@ -56,8 +57,22 @@ app.post("/upload", (req, res) => {
 		} else if (err) {
 			return res.status(500).json(err);
 		}
-		console.log(req.file);
+		filePath = req.file.path;
 	});
 });
+
+app.post("/generate-variations", async (req, res) => {
+	try {
+		const response = await openai.images.createVariation({
+			image: fs.createReadStream(filePath),
+			n: 5,
+			size: "1024x1024",
+		});
+		res.send(response.data);
+	} catch (error) {
+		console.error(error);
+	}
+});
+
 // Start server and listen for HTTP requests
 app.listen(PORT, () => console.log("Your server is running on PORT " + PORT));
