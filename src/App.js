@@ -90,7 +90,7 @@ function App() {
 				method: "POST",
 			};
 			const response = await fetch(
-				"http://localhost:8000/variations",
+				"http://localhost:8000/generate-variations",
 				options
 			);
 			const data = await response.json();
